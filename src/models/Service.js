@@ -6,6 +6,8 @@ import userAgent from '../helpers/userAgent-helpers';
 
 const debug = require('debug')('Franz:Service');
 
+const { remote } = require('electron')
+
 export const RESTRICTION_TYPES = {
   SERVICE_LIMIT: 0,
   CUSTOM_URL: 1,
@@ -209,7 +211,7 @@ export default class Service {
   }
 
   initializeWebViewEvents({ handleIPCMessage, openWindow, stores }) {
-    const webContents = this.webview.getWebContents();
+    const webContents = remote.webContents.fromId(this.webview.getWebContentsId())
 
     const handleUserAgent = (url, forwardingHack = false) => {
       if (url.startsWith('https://accounts.google.com')) {
